@@ -1,20 +1,30 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import StartScreen from './components/StartScreen';
+import ChatScreen from './components/ChatScreen';
+import SettingsScreen from './components/SettingsScreen';
 
 function App() {
-  const [data, setData] = useState(null);
+  const [screen, setScreen] = useState('start');
+  const [settings, setSettings] = useState({ speaker1: {}, speaker2: {}, topic: '' });
 
-  useEffect(() => {
-    // APIリクエストを送信
-    fetch('http://localhost:5000/api/test')
-      .then(response => response.json())
-      .then(data => setData(data))
-      .catch(error => console.error('Error fetching data:', error));
-  }, []);
+  const goToChat = (newSettings) => {
+    setSettings(newSettings);
+    setScreen('chat');
+  };
+
+  const goToSettings = () => {
+    setScreen('settings');
+  };
+
+  const goToStart = () => {
+    setScreen('start');
+  };
 
   return (
-    <div>
-      <h1>Flaskからのデータ:</h1>
-      {data ? <p>{data.message}</p> : <p>Loading...</p>}
+    <div className="App">
+      {screen === 'start' && <StartScreen onStart={() => setScreen('chat')} onSettings={goToSettings} />}
+      {screen === 'chat' && <ChatScreen settings={settings} onBack={goToStart} />}
+      {screen === 'settings' && <SettingsScreen onSave={goToChat} onCancel={goToStart} />}
     </div>
   );
 }
