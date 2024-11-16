@@ -5,7 +5,11 @@ import SettingsScreen from './components/SettingsScreen';
 
 function App() {
   const [screen, setScreen] = useState('start');
-  const [settings, setSettings] = useState({ speaker1: {}, speaker2: {}, topic: '' });
+  const [settings, setSettings] = useState({
+    speaker1: { name: '話者１', personality: '明るい' },
+    speaker2: { name: '話者２', personality: '暗い' },
+    topic: '話題' 
+  });
 
   const goToChat = (newSettings) => {
     setSettings(newSettings);

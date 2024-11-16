@@ -8,9 +8,15 @@ const ChatScreen = ({ settings, onBack }) => {
   const fetchNextDialogue = async () => {
     setLoading(true);
     try {
-      const response = await axios.post('http://localhost:5000/chat', settings);
-      console.log(response.data)
-      setDialogues([...dialogues, {speaker:"speaker1", message:response.data[0]}]);
+      const response = await axios.post(
+        'http://localhost:5000/chat',
+        {
+          settings: settings,
+          dialogues: dialogues
+        }
+      );
+      const data = JSON.parse(response.data);
+      setDialogues([...dialogues, {speaker: data.speaker, message: data.message}]);
     } catch (error) {
       console.error('Error fetching dialogue:', error);
     }
